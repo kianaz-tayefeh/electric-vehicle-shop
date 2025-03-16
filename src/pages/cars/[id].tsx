@@ -1,7 +1,8 @@
-import { CarListItem } from '@/components/templates/CarListItem'
-import { getCarData } from '@/services/car.service'
-import { TypeCar } from '@/types/car.type'
 import { GetServerSidePropsContext } from 'next'
+
+import { CarDetail } from '@/components/templates/CarDetail'
+import { getCarById } from '@/services/car.service'
+import { TypeCar } from '@/types/car.type'
 
 type CarProps = {
   car: TypeCar
@@ -13,11 +14,13 @@ export default function Car(props: CarProps) {
 
   return (
     <div>
-      <CarListItem car={car} />
+      <CarDetail car={car} />
     </div>
   )
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getCarData(context)
+  console.log('context', context)
+
+  return getCarById(context)
 }

@@ -1,7 +1,20 @@
-import { extractCarQueries } from '@/helpers/car.helpers'
 import { GetServerSidePropsContext } from 'next'
-import carsData from '../data/vehicle_data.json'
+
+import { SORTING_ORDERS } from '@/constants/common.constants'
 import { isInString, paginateArray, sortArray } from '@/helpers/common.helpers'
+import { TypeCar } from '@/types/car.type'
+
+import carsData from '../data/vehicle_data.json'
+
+const extractCarQueries = (context: GetServerSidePropsContext) => {
+  const { query } = context
+  const search = (query.search as string) || ''
+  const sort = (query.sort as keyof TypeCar) || 'price'
+  const order = (query.order as string) || SORTING_ORDERS.asc
+  const page = parseInt(query.page as string) || 1
+
+  return { search, sort, order, page }
+}
 
 export const getCarsData = (context: GetServerSidePropsContext) => {
   const { search, sort, order, page } = extractCarQueries(context)
@@ -25,10 +38,9 @@ export const getCarsData = (context: GetServerSidePropsContext) => {
   }
 }
 
-export const getCarData = (context: GetServerSidePropsContext) => {
-  console.log('1 context', context)
+export const getCarById = (context: GetServerSidePropsContext) => {
   const cars = carsData.data
-  const car = cars.find(car => car.model === context.params?.id) || {}
+  const car = cars.find(car => car.id === context.params?.id) || {}
 
   return {
     props: {

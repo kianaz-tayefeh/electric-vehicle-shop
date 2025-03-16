@@ -1,14 +1,18 @@
-import Head from 'next/head'
+import { useCallback } from 'react'
+
 import { GetServerSidePropsContext } from 'next'
-import { TypeCar } from '@/types/car.type'
-import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
-import { CarListItem } from '@/components/templates/CarListItem'
-import { SORTING_ORDERS } from '@/constants/common.constants'
-import { useDebounceMethod } from '@/hooks/useDebounceMethod'
-import { DEFAULT_CARS_PARAMS } from '@/constants/car.constants'
-import { getCarsData } from '@/services/car.service'
+
+import { CarFilters } from '@/components/templates/CarFilters'
+import { CarItem } from '@/components/templates/CarItem'
+import { Divider } from '@/components/uikit/Divider'
+import { EmptyContent } from '@/components/uikit/EmptyContent'
+import { Flex } from '@/components/uikit/Flex'
 import { Pagination } from '@/components/uikit/Pagination'
+import { Title } from '@/components/uikit/Title'
+import { Virtualization } from '@/components/uikit/Virtualization'
+import { getCarsData } from '@/services/car.service'
+import { TypeCar } from '@/types/car.type'
 
 type CarsProps = {
   cars: TypeCar[]
@@ -19,7 +23,9 @@ type CarsProps = {
   totalPages: number
 }
 
-export default function Cars(props: CarsProps) {
+// height: calc(100vh - 200px);
+
+const Cars = (props: CarsProps) => {
   const { cars, sort, order, search, page, totalPages } = props
 
   const router = useRouter()
@@ -32,41 +38,6 @@ export default function Cars(props: CarsProps) {
       }),
     [router],
   )
-  const debouncedUpdateRouterQueries = useDebounceMethod(updateRouterQueries)
-
-  const sortOptions = Object.values(SORTING_ORDERS).map(order => {
-    return { label: `price - ${order}`, value: `price-${order}` }
-  })
-
-  const handleChangeSort = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const selectedValue = e.target.value
-      const [sort, order] = selectedValue.split('-')
-
-      updateRouterQueries(search, sort, order)
-    },
-    [updateRouterQueries, search],
-  )
-
-  const [searchInputValue, setSearchInputValue] = useState(search)
-  const handleChangeSearch = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const search = e.target.value
-      setSearchInputValue(search)
-
-      debouncedUpdateRouterQueries(search, sort, order)
-    },
-    [debouncedUpdateRouterQueries, sort, order],
-  )
-
-  const handleResetFilters = useCallback(() => {
-    updateRouterQueries(
-      DEFAULT_CARS_PARAMS.search,
-      DEFAULT_CARS_PARAMS.sort,
-      DEFAULT_CARS_PARAMS.order,
-    )
-    setSearchInputValue('')
-  }, [updateRouterQueries])
 
   const handleChangePage = useCallback(
     (page: number) => {
@@ -77,35 +48,29 @@ export default function Cars(props: CarsProps) {
 
   return (
     <div>
-      <Head>
-        <title>CARS</title>
-        <meta name='description' content='Testcase' />
-      </Head>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-        <div>
-          <input
-            type='text'
-            value={searchInputValue}
-            onChange={handleChangeSearch}
-            placeholder='Search by brand or model'
-            style={{ outline: '1px solid black' }}
-          />
-          <select onChange={handleChangeSort} value={`${sort}-${order}`}>
-            {sortOptions.map(option => (
-              <option value={option.value} key={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleResetFilters}>Reset filters</button>
-        </div>
-        {!cars.length && <p>No cars found, Please change the filters.</p>}
-        {cars.map(car => {
-          // @TODO fix this key
-          return <CarListItem key={`${car.brand}${car.model}${car.year}${car.price}`} car={car} />
-        })}
-        <Pagination totalPages={totalPages} currentPage={page} onChangePage={handleChangePage} />
-      </div>
+      <Title order={4}>Electric Vehicles</Title>
+      <Divider size='md' className='mb-6' />
+
+      <Flex justify='center' align='center'>
+        <CarFilters
+          updateRouterQueries={updateRouterQueries}
+          search={search}
+          sort={sort}
+          order={order}
+        />
+      </Flex>
+
+      {!cars.length && (
+        <EmptyContent message='No electric vehicles found. Try a different search.' />
+      )}
+
+      <Virtualization
+        items={cars}
+        size={480}
+        component={CarItem}
+        className='h-[calc(100vh-300px)]'
+      />
+      <Pagination totalPages={totalPages} currentPage={page} onChangePage={handleChangePage} />
     </div>
   )
 }
@@ -113,3 +78,5 @@ export default function Cars(props: CarsProps) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return getCarsData(context)
 }
+
+export default Cars

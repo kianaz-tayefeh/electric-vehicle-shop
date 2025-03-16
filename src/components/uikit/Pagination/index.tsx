@@ -1,45 +1,49 @@
 import React, { useMemo } from 'react'
 
+import { Button } from '@/components/uikit/Button'
+
 type PaginationProps = {
   totalPages: number
   currentPage: number
   onChangePage: (page: number) => void
 }
 
-export const Pagination = (props: PaginationProps) => {
-  const { totalPages, currentPage, onChangePage } = props
-
+export const Pagination = ({ totalPages, currentPage, onChangePage }: PaginationProps) => {
   const pages = useMemo(() => Array.from({ length: totalPages }, (_, i) => i + 1), [totalPages])
 
   return (
-    <div className='flex justify-center space-x-2 mt-4'>
-      <button
-        className='px-3 py-1 bg-gray-200 rounded disabled:opacity-50'
+    <div className='flex justify-center items-center gap-2 mt-4'>
+      {/* Previous Button */}
+      <Button
+        variant='outline'
+        size='sm'
         onClick={() => onChangePage(currentPage - 1)}
         disabled={currentPage === 1}
       >
         Prev
-      </button>
+      </Button>
 
+      {/* Page Numbers */}
       {pages.map(page => (
-        <button
+        <Button
           key={page}
-          className={`px-3 py-1 rounded ${
-            currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'
-          }`}
+          variant={currentPage === page ? 'default' : 'outline'}
+          size='sm'
           onClick={() => onChangePage(page)}
         >
           {page}
-        </button>
+        </Button>
       ))}
 
-      <button
-        className='px-3 py-1 bg-gray-200 rounded disabled:opacity-50'
+      {/* Next Button */}
+      <Button
+        variant='outline'
+        size='sm'
         onClick={() => onChangePage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         Next
-      </button>
+      </Button>
     </div>
   )
 }

@@ -1,5 +1,8 @@
 import { DEFAULT_DEBOUNCE_TIME, PAGINATION, SORTING_ORDERS } from '@/constants/common.constants'
 
+import { clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
 export const isInString = (mainString: string, searchString: string): boolean =>
   mainString?.toLowerCase?.()?.includes(searchString?.toLowerCase?.())
 
@@ -24,37 +27,11 @@ export const paginateArray = <T>(array: T[], page: number) => {
   return { totalPages, paginateds }
 }
 
-export const getPriceFormat = (
-  propPrice: string | number,
-  decimalSeparator = ',',
-  thousandSeparator = '.',
-) => {
-  const price = propPrice?.toString?.()
-
-  if (!price || price.trim() === '') return ''
-
-  let [integerPart, decimalPart] = price.split('.')
-
-  if (isNaN(Number(integerPart))) return ''
-
-  const thousandsRegex = /(\d+)(\d{3})/
-  while (thousandsRegex.test(integerPart)) {
-    integerPart = integerPart.replace(thousandsRegex, '$1' + thousandSeparator + '$2')
-  }
-
-  if (decimalPart !== undefined) {
-    decimalPart = decimalPart.replace(/[^0-9]/g, '')
-    decimalPart = decimalPart.substring(0, 2)
-  }
-
-  if (price.slice(-1) === '.' && decimalSeparator === ',') {
-    return `${integerPart}${decimalSeparator}`
-  }
-
-  return decimalPart !== undefined ? `${integerPart}${decimalSeparator}${decimalPart}` : integerPart
+export const getPriceFormat = (price: number) => {
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(price)
 }
 
-export function debounceMethod(func: any, debounceTime = DEFAULT_DEBOUNCE_TIME) {
+export const debounceMethod = (func: any, debounceTime = DEFAULT_DEBOUNCE_TIME) => {
   if (!func || !debounceTime) return func
 
   let timer: ReturnType<typeof setTimeout>
@@ -65,4 +42,8 @@ export function debounceMethod(func: any, debounceTime = DEFAULT_DEBOUNCE_TIME) 
       func.apply(this, args)
     }, debounceTime)
   }
+}
+
+export function cn(...classes: (string | undefined | null | boolean)[]) {
+  return classes.filter(Boolean).join(' ')
 }

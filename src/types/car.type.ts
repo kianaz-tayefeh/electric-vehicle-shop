@@ -1,4 +1,5 @@
 export type TypeCar = {
+  id: string
   brand: string
   model: string
   year: number
