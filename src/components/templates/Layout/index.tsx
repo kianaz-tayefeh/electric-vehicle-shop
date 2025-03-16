@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { LinkButton } from '@/components/uikit/LinkButton'
+import { ROUTES } from '@/constants/common.constants'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -20,11 +21,10 @@ export const Layout = ({
   return (
     <main className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <header>
-        <LinkButton label='Home' link='/' />-
-        <LinkButton label='Cars' link='/cars' />-
-        <LinkButton label='Bmw' link='/cars/bmwww' />
+        <LinkButton label='Home' link={ROUTES.home} />-
+        <LinkButton label='Cars' link={ROUTES.cars} />-
       </header>
-      <section>{children}</section>
+      <section style={{ padding: 40 }}>{children}</section>
       <footer>footer</footer>
     </main>
   )
