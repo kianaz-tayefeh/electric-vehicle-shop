@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import { LinkButton } from '@/components/uikit/Link'
+import { LinkButton } from '@/components/uikit/LinkButton'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -22,7 +22,7 @@ export const Layout = ({
       <header>
         <LinkButton label='Home' link='/' />-
         <LinkButton label='Cars' link='/cars' />-
-        <LinkButton label='Bmw' link='/cars/1' />
+        <LinkButton label='Bmw' link='/cars/bmwww' />
       </header>
       <section>{children}</section>
       <footer>footer</footer>

@@ -1,4 +1,4 @@
-import { LinkButton } from '@/components/uikit/Link'
+import { LinkButton } from '@/components/uikit/LinkButton'
 
 export default function NotFound() {
   return (
