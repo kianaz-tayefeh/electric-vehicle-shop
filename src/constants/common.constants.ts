@@ -1,5 +1,5 @@
 export const DEFAULT_DEBOUNCE_TIME = 500
-export const PAGINATION = 5
+export const PAGINATION = 10
 
 export const ROUTES = {
   home: '/',

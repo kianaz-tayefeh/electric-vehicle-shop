@@ -23,7 +23,7 @@ export const CarListItem = (props: CarListItemProps) => {
       }}
     >
       <div style={{ padding: 20 }}>
-        <Image src={car.images[0]} alt='car image' width={250} height={38} priority />
+        <Image src={car.images[0]} alt='car image' width={450} height={38} priority />
       </div>
       <div style={{ padding: 20 }}>
         <b>{car.brand}</b> {car.model} <small>({car.year}) </small>

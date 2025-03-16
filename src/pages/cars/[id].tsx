@@ -1,8 +1,23 @@
-import { useRouter } from 'next/router'
+import { CarListItem } from '@/components/templates/CarListItem'
+import { getCarData } from '@/services/car.service'
+import { TypeCar } from '@/types/car.type'
+import { GetServerSidePropsContext } from 'next'
 
-export default function Car() {
-  const router = useRouter()
-  const { id } = router.query
+type CarProps = {
+  car: TypeCar
+}
 
-  return <div>Car: {id}</div>
+export default function Car(props: CarProps) {
+  const { car } = props
+  console.log('1 car', car)
+
+  return (
+    <div>
+      <CarListItem car={car} />
+    </div>
+  )
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getCarData(context)
 }

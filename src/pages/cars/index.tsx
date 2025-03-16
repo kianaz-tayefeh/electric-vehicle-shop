@@ -1,37 +1,42 @@
 import Head from 'next/head'
-import carsData from '../../data/vehicle_data.json'
 import { GetServerSidePropsContext } from 'next'
 import { TypeCar } from '@/types/car.type'
-import { isInString, paginateArray, sortArray } from '@/helpers/common.helpers'
-import { extractCarQueries } from '@/helpers/car.helpers'
 import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
-import { CarListItem } from '@/components/templates/CarListItem/CarListItem'
+import { CarListItem } from '@/components/templates/CarListItem'
 import { SORTING_ORDERS } from '@/constants/common.constants'
 import { useDebounceMethod } from '@/hooks/useDebounceMethod'
 import { DEFAULT_CARS_PARAMS } from '@/constants/car.constants'
+import { getCarsData } from '@/services/car.service'
+import { Pagination } from '@/components/uikit/Pagination'
 
 type CarsProps = {
   cars: TypeCar[]
   sort: string
   order: string
   search: string
+  page: number
+  totalPages: number
 }
 
 export default function Cars(props: CarsProps) {
-  const { cars, sort, order, search } = props
+  const { cars, sort, order, search, page, totalPages } = props
 
   const router = useRouter()
 
   const updateRouterQueries = useCallback(
-    (search: string, sort: string, order: string) =>
+    (search: string, sort: string, order: string, page?: number) =>
       router.push({
         pathname: '/cars',
-        query: { ...router.query, search, sort, order },
+        query: { ...router.query, search, sort, order, page },
       }),
     [router],
   )
   const debouncedUpdateRouterQueries = useDebounceMethod(updateRouterQueries)
+
+  const sortOptions = Object.values(SORTING_ORDERS).map(order => {
+    return { label: `price - ${order}`, value: `price-${order}` }
+  })
 
   const handleChangeSort = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -63,9 +68,12 @@ export default function Cars(props: CarsProps) {
     setSearchInputValue('')
   }, [updateRouterQueries])
 
-  const sortOptions = Object.values(SORTING_ORDERS).map(order => {
-    return { label: `price - ${order}`, value: `price-${order}` }
-  })
+  const handleChangePage = useCallback(
+    (page: number) => {
+      updateRouterQueries(search, sort, order, page)
+    },
+    [updateRouterQueries, search, sort, order],
+  )
 
   return (
     <div>
@@ -79,6 +87,7 @@ export default function Cars(props: CarsProps) {
             type='text'
             value={searchInputValue}
             onChange={handleChangeSearch}
+            placeholder='Search by brand or model'
             style={{ outline: '1px solid black' }}
           />
           <select onChange={handleChangeSort} value={`${sort}-${order}`}>
@@ -95,30 +104,12 @@ export default function Cars(props: CarsProps) {
           // @TODO fix this key
           return <CarListItem key={`${car.brand}${car.model}${car.year}${car.price}`} car={car} />
         })}
+        <Pagination totalPages={totalPages} currentPage={page} onChangePage={handleChangePage} />
       </div>
     </div>
   )
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { search, sort, order, page } = extractCarQueries(context)
-
-  const cars = carsData.data
-  const filteredCars = cars.filter(
-    car => isInString(car.brand, search) || isInString(car.model, search),
-  )
-  const sortedCars = sortArray(filteredCars, sort, order)
-
-  const { totalPages, paginateds: paginatedCars } = paginateArray(sortedCars, page)
-
-  return {
-    props: {
-      cars: paginatedCars,
-      search,
-      sort,
-      order,
-      page,
-      totalPages,
-    },
-  }
+  return getCarsData(context)
 }
