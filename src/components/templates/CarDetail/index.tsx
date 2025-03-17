@@ -8,7 +8,6 @@ import {
   AlertCircle,
   BatteryCharging,
   Calendar,
-  Check,
   Euro,
   Gauge,
   MapPin,

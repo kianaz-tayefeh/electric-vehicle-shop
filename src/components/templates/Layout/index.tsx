@@ -2,6 +2,7 @@ import { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 
 import './layout.css'
+import KeyboardNavigation from '@/components/templates/Layout/KeyboardNavigation'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 export const Layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <main className={`${inter.variable} antialiased`}>
+      <KeyboardNavigation />
       <section style={{ padding: 30 }}>{children}</section>
     </main>
   )

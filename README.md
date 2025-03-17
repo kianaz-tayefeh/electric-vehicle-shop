@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vehicle Listing App
 
-## Getting Started
+## Overview
 
-First, run the development server:
+A Next.js application for listing vehicles with search, filters, sorting, and pagination. Optimized for performance with ImageLoader, SSR, and virtualization.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Structured Codebase**: Configured with ESLint, Prettier, and Husky for code consistency.
+- **Routing**: Home, Car List, Car Details (`/cars/:id`), Custom 404.
+- **API**: JSON-based with separate endpoints for listing and details, pagination, sorting, and filtering.
+- **Functionality**:
+  - Dynamic filters with persistence in URL.
+  - Optimized image loading with skeletons and opacity transitions.
+  - Virtualized list for performance.
+  - Dark mode support.
+- **UI & UX**: TailwindCSS, responsive design, keyboard navigation.
+- **Testing**: Implemented with Vitest.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Install dependencies:
+   ```sh
+   npm install
+   ```
+2. Start the development server:
+   ```sh
+   npm run dev
+   ```
+3. Run tests:
+   ```sh
+   npm run test
+   ```
 
-## Learn More
+## Notes
 
-To learn more about Next.js, take a look at the following resources:
+- No need for manual lazy loading; Next.js handles it automatically.
+- API services are modularized for maintainability.
+- Filters and UI components are decoupled for reusability.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with Next.js & Typescript.
