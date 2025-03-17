@@ -1,38 +1,19 @@
-import {
-  LG_BREAKPOINT,
-  MD_BREAKPOINT,
-  SM_BREAKPOINT,
-  XL_BREAKPOINT,
-} from '@/constants/common.constants'
 import { useState, useEffect } from 'react'
+import { LG_BREAKPOINT, SM_BREAKPOINT } from '@/constants/common.constants'
 
-type Columns = { base: number; sm?: number; md?: number; lg?: number; xl?: number }
-
-export const useResponsiveColumns = (columns: Columns) => {
-  const [columnCount, setColumnCount] = useState(columns.base)
+export const useResponsiveColumns = (defaultColumns: number) => {
+  const [dynamicColumns, setDynamicColumns] = useState(defaultColumns)
 
   useEffect(() => {
     const updateColumns = () => {
       const width = window.innerWidth
-      setColumnCount(
-        width >= XL_BREAKPOINT
-          ? (columns.xl ?? columns.base)
-          : width >= LG_BREAKPOINT
-            ? (columns.lg ?? columns.base)
-            : width >= MD_BREAKPOINT
-              ? (columns.md ?? columns.base)
-              : width >= SM_BREAKPOINT
-                ? (columns.sm ?? columns.base)
-                : columns.base,
-      )
+      setDynamicColumns(width < SM_BREAKPOINT ? 1 : width < LG_BREAKPOINT ? 2 : 3)
     }
 
-    const observer = new ResizeObserver(updateColumns)
-    observer.observe(document.body)
+    updateColumns() // Set initial value
+    window.addEventListener('resize', updateColumns)
+    return () => window.removeEventListener('resize', updateColumns)
+  }, [])
 
-    updateColumns()
-    return () => observer.disconnect()
-  }, [columns])
-
-  return columnCount
+  return dynamicColumns
 }
