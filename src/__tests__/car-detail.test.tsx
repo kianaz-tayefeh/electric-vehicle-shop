@@ -3,7 +3,14 @@ import { CarItem } from '@/components/templates/CarItem'
 import { TypeCar } from '@/types/car.type'
 
 import { render, screen } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { expect, test, vi } from 'vitest'
+
+vi.mock('next/router', () => ({
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+    query: {},
+  })),
+}))
 
 const mockCar = {
   id: '6',
