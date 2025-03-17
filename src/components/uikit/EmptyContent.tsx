@@ -1,6 +1,6 @@
 import { Text } from '@/components/uikit/Text'
 
-interface EmptyContentProps {
+type EmptyContentProps = {
   message: string
 }
 

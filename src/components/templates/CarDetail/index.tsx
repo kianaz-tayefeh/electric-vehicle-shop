@@ -1,11 +1,6 @@
 import React from 'react'
 
-import { Button } from '@/components/uikit/Button'
-import { Card } from '@/components/uikit/Card'
-import { CardContent } from '@/components/uikit/CardContent/CardContent'
-import { Flex } from '@/components/uikit/Flex'
-import { ImageGallery } from '@/components/uikit/ImageGallery'
-import { Text } from '@/components/uikit/Text'
+import { Button, Card, CardContent, ImageGallery, Text } from '@/components/uikit'
 import { getPriceFormat } from '@/helpers/common.helpers'
 import { TypeCar } from '@/types/car.type'
 
@@ -13,6 +8,7 @@ import {
   AlertCircle,
   BatteryCharging,
   Calendar,
+  Check,
   Euro,
   Gauge,
   MapPin,
@@ -21,64 +17,61 @@ import {
   Zap,
 } from 'lucide-react'
 
-interface CarDetailProps {
+type CarDetailProps = {
   car: TypeCar
 }
 
 export const CarDetail: React.FC<CarDetailProps> = ({ car }) => {
   if (!car) return null
 
+  const carInfo = [
+    { icon: <Gauge size={18} />, text: `${car.kilometer_count.toLocaleString('de-DE')} km` },
+    {
+      icon: <BatteryCharging size={18} />,
+      text: `${car.battery_capacity_kWh} kWh | ${car.charging_speed_kW} kW`,
+    },
+    { icon: <Zap size={18} />, text: `${car.range_km} km range` },
+    { icon: <Users size={18} />, text: `${car.seats} seats` },
+    { icon: <Calendar size={18} />, text: car.condition === 'New' ? 'Brand New' : 'Used' },
+    { icon: <MapPin size={18} />, text: car.location },
+  ]
+
+  const ownershipCosts = [
+    { icon: <Euro size={18} />, text: 'Estimated Charging Cost: 5€ / 100 km' },
+    { icon: <ShieldCheck size={18} />, text: 'Road Tax: 0€ (EV Exempt)' },
+  ]
+
+  const governmentIncentives = [
+    { text: 'Eligible for up to 6,000€ EV subsidy' },
+    { text: 'Reduced company car tax rate' },
+  ]
+
   return (
-    <Card className='p-6 sm:p-8 md  :p-10 shadow-lg'>
-      <Flex direction={{ base: 'col', sm: 'col', md: 'row' }} gap='6' justify='start' align='start'>
+    <Card className='p-6 sm:p-8 md:p-10 shadow-lg'>
+      <div className='flex flex-col lg:flex-row gap-6 items-start'>
         {/* Image Gallery */}
-        <div className='w-full md:w-1/2'>
-          <Text variant='h1' className='mb-4 text-center md:text-left'>
+        <div className='w-full lg:w-1/2'>
+          <Text variant='h1' className='mb-4 text-center lg:text-left'>
             {car.brand} {car.model} ({car.year})
           </Text>
           <ImageGallery images={car.images} />
         </div>
 
         {/* Car Details */}
-        <CardContent className='p-5 mt-4 w-full md:w-1/2'>
-          <Flex direction={{ base: 'col' }} gap='4'>
-            <Text variant='h3' color='brand-500' className='text-xl md:text-2xl'>
-              {getPriceFormat(car.price)} €
-            </Text>
+        <CardContent className='p-5 w-full lg:w-1/2'>
+          <Text variant='h3' color='brand-500' className='text-2xl'>
+            {getPriceFormat(car.price)} €
+          </Text>
 
-            <Flex align='center' gap='2'>
-              <Gauge size={18} />
-              <Text>{car.kilometer_count.toLocaleString('de-DE')} km</Text>
-            </Flex>
+          <div className='flex flex-col gap-3 mt-4'>
+            {carInfo.map((detail, index) => (
+              <div key={index} className='flex items-center gap-2'>
+                {detail.icon}
+                <Text>{detail.text}</Text>
+              </div>
+            ))}
 
-            <Flex align='center' gap='2'>
-              <BatteryCharging size={18} />
-              <Text>
-                {car.battery_capacity_kWh} kWh | {car.charging_speed_kW} kW
-              </Text>
-            </Flex>
-
-            <Flex align='center' gap='2'>
-              <Zap size={18} />
-              <Text>{car.range_km} km range</Text>
-            </Flex>
-
-            <Flex align='center' gap='2'>
-              <Users size={18} />
-              <Text>{car.seats} seats</Text>
-            </Flex>
-
-            <Flex align='center' gap='2'>
-              <Calendar size={18} />
-              <Text>{car.condition === 'New' ? 'Brand New' : 'Used'}</Text>
-            </Flex>
-
-            <Flex align='center' gap='2'>
-              <MapPin size={18} />
-              <Text>{car.location}</Text>
-            </Flex>
-
-            <Text color={car.color !== 'White' ? 'primary' : 'muted'}>
+            <Text className={car.color !== 'White' ? 'text-primary' : 'text-muted'}>
               <strong>Color:</strong> {car.color}
             </Text>
 
@@ -86,29 +79,25 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car }) => {
               <strong>Drivetrain:</strong> {car.drivetrain}
             </Text>
 
-            {car.autopilot && <Text>✅ Autopilot Enabled</Text>}
-
-            <Flex align='center' gap='2'>
-              <AlertCircle size={18} color={car.accidents ? 'red' : 'gray'} />
-              <Text color={car.accidents ? 'danger' : 'muted'}>
+            <div className='flex items-center gap-2'>
+              <AlertCircle size={18} className={car.accidents ? 'text-red-500' : 'text-gray-400'} />
+              <Text className={car.accidents ? 'text-danger' : 'text-muted'}>
                 {car.accidents ? car.accident_description : 'No accidents'}
               </Text>
-            </Flex>
-          </Flex>
+            </div>
+          </div>
 
           {/* Ownership Costs */}
           <div className='mt-6'>
             <Text variant='h4' className='text-lg'>
               Ownership Costs
             </Text>
-            <Flex align='center' gap='2'>
-              <Euro size={18} />
-              <Text>Estimated Charging Cost: 5€ / 100 km</Text>
-            </Flex>
-            <Flex align='center' gap='2'>
-              <ShieldCheck size={18} />
-              <Text>Road Tax: 0€ (EV Exempt)</Text>
-            </Flex>
+            {ownershipCosts.map(({ icon, text }, index) => (
+              <div key={index} className='flex items-center gap-2'>
+                {icon}
+                <Text>{text}</Text>
+              </div>
+            ))}
           </div>
 
           {/* Government Incentives */}
@@ -116,21 +105,22 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car }) => {
             <Text variant='h4' className='text-lg'>
               Government Incentives
             </Text>
-            <Text>- Eligible for up to 6,000€ EV subsidy</Text>
-            <Text>- Reduced company car tax rate</Text>
+            {governmentIncentives.map(({ text }, index) => (
+              <Text key={index}>- {text}</Text>
+            ))}
           </div>
 
           {/* Call to Action */}
-          <Flex direction={{ base: 'col', md: 'row' }} gap='4' className='mt-8'>
+          <div className='flex flex-col md:flex-row gap-4 mt-8'>
             <Button variant='outline' className='w-full md:w-auto'>
               Request a Test Drive
             </Button>
             <Button variant='secondary' className='w-full md:w-auto'>
               Contact Seller
             </Button>
-          </Flex>
+          </div>
         </CardContent>
-      </Flex>
+      </div>
     </Card>
   )
 }

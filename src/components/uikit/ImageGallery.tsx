@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import Image from 'next/image'
 
+import { Swiper as SwiperInstance } from 'swiper'
 import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -10,7 +11,7 @@ type ImageGalleryProps = {
 }
 
 export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
-  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperInstance | null>(null)
 
   return (
     <div className='w-full'>
@@ -29,9 +30,8 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
               <Image
                 src={image}
                 alt={`Car Image ${index}`}
-                layout='fill'
-                objectFit='cover'
-                className='rounded-lg shadow-md'
+                fill
+                className='rounded-lg shadow-md object-cover'
                 priority={index === 0}
               />
             </div>
@@ -55,9 +55,8 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
               <Image
                 src={image}
                 alt={`Thumbnail ${index}`}
-                layout='fill'
-                objectFit='cover'
-                className='rounded-md border-2 border-transparent hover:border-blue-500 transition-all'
+                fill
+                className='rounded-md border-2 border-transparent hover:border-blue-500 transition-all object-cover'
               />
             </div>
           </SwiperSlide>

@@ -1,9 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { Button } from '@/components/uikit/Button'
-import { Flex } from '@/components/uikit/Flex'
-import { Input } from '@/components/uikit/Input'
-import { Select } from '@/components/uikit/Select'
+import { Button, Input, Select } from '@/components/uikit'
 import { DEFAULT_CARS_PARAMS } from '@/constants/car.constants'
 import { SORTING_ORDERS } from '@/constants/common.constants'
 import { useDebounceMethod } from '@/hooks/useDebounceMethod'
@@ -16,7 +13,8 @@ type CarFiltersProps = {
   sort: string
   order: string
 }
-export const CarFilters = (props: CarFiltersProps) => {
+
+export const CarFilters: React.FC<CarFiltersProps> = props => {
   const { search, sort, order, updateRouterQueries } = props
 
   const debouncedUpdateRouterQueries = useDebounceMethod(updateRouterQueries)
@@ -56,24 +54,25 @@ export const CarFilters = (props: CarFiltersProps) => {
   }, [updateRouterQueries])
 
   return (
-    <Flex
-      direction={{ base: 'col', sm: 'row', md: 'row' }}
-      justify='between'
-      align='center'
-      gap='4'
-      className='mb-6'
-    >
+    <div className='flex flex-col lg:flex-row xl:flex-row justify-between items-center gap-6 mb-6'>
       <Input
         type='text'
+        name='searchCar'
+        data-testid='search-input'
         value={searchInputValue}
         onChange={handleChangeSearch}
         placeholder='Search by brand or model'
         icon={<Search className='h-5 w-5' />}
       />
-      <Select options={sortOptions} onChange={handleChangeSort} value={`${sort}-${order}`} />
+      <Select
+        options={sortOptions}
+        onChange={handleChangeSort}
+        value={`${sort}-${order}`}
+        data_testid='sort-input'
+      />
       <Button onClick={handleResetFilters} className='w-80' variant='outline'>
         Reset filters
       </Button>
-    </Flex>
+    </div>
   )
 }

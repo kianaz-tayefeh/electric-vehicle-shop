@@ -8,11 +8,10 @@ import {
 } from '@/constants/image.constants'
 import { cn } from '@/helpers/common.helpers'
 
-import './image-loader.css'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-export type ImageLoaderProps = {
+type ImageLoaderProps = {
   src: string
   alt?: string
   width?: number
@@ -20,7 +19,7 @@ export type ImageLoaderProps = {
   className?: string
 }
 
-export const ImageLoader = (props: ImageLoaderProps) => {
+export const ImageLoader: React.FC<ImageLoaderProps> = props => {
   const { src, alt = 'image', className, width, height } = props
 
   const [imageState, setImageState] = useState(IMAGE_LOADER_STATES.loading)
@@ -45,9 +44,11 @@ export const ImageLoader = (props: ImageLoaderProps) => {
         width={width}
         height={height}
         priority
-        className={`image ${imageState === IMAGE_LOADER_STATES.loading && 'loading'}
-          ${imageState === IMAGE_LOADER_STATES.cached && 'cached'}
-        `}
+        className={cn(
+          'max-w-full select-none transition-opacity duration-400',
+          imageState === IMAGE_LOADER_STATES.loading && 'opacity-0 w-0 h-0',
+          imageState === IMAGE_LOADER_STATES.cached && 'transition-none',
+        )}
       />
     </div>
   )

@@ -1,31 +1,28 @@
-import { Geist, Geist_Mono } from 'next/font/google'
-
-import { LinkButton } from '@/components/uikit/LinkButton'
-import { ROUTES } from '@/constants/common.constants'
+import { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
 
 import './layout.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
 
-export const Layout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) => {
+export const metadata: Metadata = {
+  title: 'Electric Vehicles',
+  description: 'Discover and explore the latest electric vehicles.',
+  icons: '/favicon.ico',
+}
+
+export const Layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <main className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <header>
-        <LinkButton label='Home' link={ROUTES.home} />-
-        <LinkButton label='Cars' link={ROUTES.cars} />-
-      </header>
+    <main className={`${inter.variable} antialiased`}>
       <section style={{ padding: 30 }}>{children}</section>
     </main>
   )

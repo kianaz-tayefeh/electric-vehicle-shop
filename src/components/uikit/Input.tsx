@@ -2,16 +2,18 @@ import * as React from 'react'
 
 import { cn } from '@/helpers/common.helpers'
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   icon?: React.ReactNode
+  name: string
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = 'text', icon, ...props }, ref) => (
+  ({ className, type = 'text', icon, name, ...props }, ref) => (
     <div className='input-wrapper'>
       {icon && <div className='input-icon'>{icon}</div>}
       <input
         type={type}
+        name={name}
         className={cn('input', icon ? 'pl-10' : '', className)}
         ref={ref}
         {...props}

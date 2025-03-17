@@ -15,6 +15,6 @@ export type TypeCar = {
   autopilot: boolean
   kilometer_count: number
   accidents: boolean
-  accident_description: string
+  accident_description?: string
   images: string[]
 }

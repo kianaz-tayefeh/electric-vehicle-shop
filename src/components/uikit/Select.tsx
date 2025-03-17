@@ -4,17 +4,18 @@ import { cn } from '@/helpers/common.helpers'
 
 import { ChevronDown } from 'lucide-react'
 
-export type SelectOption = {
+type SelectOption = {
   value: string
   label: string
 }
 
-export type SelectProps = {
+type SelectProps = {
   options: SelectOption[]
   value?: string
   onChange: (value: string) => void
   placeholder?: string
   className?: string
+  data_testid: string
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -23,6 +24,7 @@ export const Select: React.FC<SelectProps> = ({
   onChange,
   placeholder = 'Select...',
   className,
+  data_testid,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const dropdownRef = React.useRef<HTMLDivElement>(null)
@@ -45,6 +47,7 @@ export const Select: React.FC<SelectProps> = ({
         type='button'
         className={cn('select-btn', className)}
         onClick={() => setIsOpen(prev => !prev)}
+        data-testid={data_testid}
       >
         <span className={value ? 'text-gray-900' : 'text-gray-400'}>
           {options.find(o => o.value === value)?.label || placeholder}

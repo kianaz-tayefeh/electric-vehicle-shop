@@ -1,11 +1,13 @@
-import { LinkButton } from '@/components/uikit/LinkButton'
+import Link from 'next/link'
+
+import { Text } from '@/components/uikit/Text'
 
 export default function NotFound() {
   return (
     <div>
-      <h1>Custom Error: 404 - Page Not Found</h1>
-      <p>Oops! The page you are looking for does not exist.</p>
-      <LinkButton label='Back to Home' link='/' />
+      <Text variant='h1'>Custom Error: 404 - Page Not Found</Text>
+      <Text>Oops! The page you are looking for does not exist.</Text>
+      <Link href='/'>Back to Home</Link>
     </div>
   )
 }

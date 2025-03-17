@@ -1,12 +1,8 @@
+import { JSX } from 'react'
+
 import Link from 'next/link'
 
-import { Badge } from '@/components/uikit/Badge'
-import { Card } from '@/components/uikit/Card'
-import { CardContent } from '@/components/uikit/CardContent/CardContent'
-import { CardFooter } from '@/components/uikit/CardFooter'
-import { Flex } from '@/components/uikit/Flex'
-import { ImageLoader } from '@/components/uikit/ImageLoader'
-import { Text } from '@/components/uikit/Text'
+import { Badge, Card, CardContent, CardFooter, ImageLoader, Text } from '@/components/uikit'
 import { getPriceFormat } from '@/helpers/common.helpers'
 import { TypeCar } from '@/types/car.type'
 
@@ -16,13 +12,11 @@ type CarItemProps = {
   item: TypeCar
 }
 
-export const CarItem = (props: CarItemProps) => {
-  const { item: car } = props
-
+export const CarItem = ({ item: car }: CarItemProps): JSX.Element => {
   return (
     <Card>
       {/* Car Image */}
-      <CardContent className='p-0'>
+      <CardContent>
         <Badge variant='success' className='mb-5'>
           {car.condition}
         </Badge>
@@ -47,32 +41,30 @@ export const CarItem = (props: CarItemProps) => {
           {car.model} • {car.brand} • {car.drivetrain}
         </Text>
 
-        {/* Specs with Icons */}
-        <Flex gap='3'>
-          <Flex align='center' gap='1'>
+        <div className='flex gap-3'>
+          <div className='flex items-center gap-2'>
             <Zap size={16} className='text-brand-500' />
             <Text>{car.battery_capacity_kWh} kWh</Text>
-          </Flex>
-          <Flex align='center' gap='1'>
-            <BatteryCharging size={16} className='text-success' />
+          </div>
+          <div className='flex items-center gap-2'>
+            <BatteryCharging size={16} />
             <Text>{car.range_km} km</Text>
-          </Flex>
-          <Flex align='center' gap='1'>
+          </div>
+          <div className='flex items-center gap-2'>
             <Gauge size={16} className='text-secondary' />
             <Text>{car.charging_speed_kW} kW</Text>
-          </Flex>
-        </Flex>
+          </div>
+        </div>
       </CardContent>
 
-      {/* Pricing */}
       <CardFooter>
         <Text variant='p'>Price</Text>
-        <Flex align='end' gap='0'>
+        <div className='flex items-end gap-0'>
           <Text variant='h3' color='primary'>
             <Euro size={12} className='inline' />
             {getPriceFormat(car.price)}
           </Text>
-        </Flex>
+        </div>
       </CardFooter>
     </Card>
   )

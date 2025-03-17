@@ -1,23 +1,25 @@
 import { DEFAULT_DEBOUNCE_TIME, PAGINATION, SORTING_ORDERS } from '@/constants/common.constants'
 
-import { clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-
 export const isInString = (mainString: string, searchString: string): boolean =>
   mainString?.toLowerCase?.()?.includes(searchString?.toLowerCase?.())
 
-export const sortArray = <T>(array: T[], sortKey: keyof T, sortOrder = SORTING_ORDERS.asc): T[] => {
-  return array?.sort((a: any, b: any) => {
-    const valA = a[sortKey]
-    const valB = b[sortKey]
+export const sortArray = <T, K extends keyof T>(
+  array: T[],
+  key: K,
+  order = SORTING_ORDERS.asc,
+): T[] =>
+  [...array].sort((a, b) => {
+    const valA = a[key]
+    const valB = b[key]
 
-    if (typeof valA === 'string') {
-      return sortOrder === SORTING_ORDERS.asc ? valA.localeCompare(valB) : valB.localeCompare(valA)
-    }
-
-    return sortOrder === SORTING_ORDERS.asc ? valA - valB : valB - valA
+    return typeof valA === 'string'
+      ? order === SORTING_ORDERS.asc
+        ? valA.localeCompare(valB as string)
+        : (valB as string).localeCompare(valA)
+      : order === SORTING_ORDERS.asc
+        ? (valA as number) - (valB as number)
+        : (valB as number) - (valA as number)
   })
-}
 
 export const paginateArray = <T>(array: T[], page: number) => {
   const totalPages = Math.ceil(array.length / PAGINATION)
@@ -31,16 +33,14 @@ export const getPriceFormat = (price: number) => {
   return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(price)
 }
 
-export const debounceMethod = (func: any, debounceTime = DEFAULT_DEBOUNCE_TIME) => {
-  if (!func || !debounceTime) return func
-
+export const debounceMethod = <T extends (...args: any[]) => void>(
+  func: T,
+  time = DEFAULT_DEBOUNCE_TIME,
+) => {
   let timer: ReturnType<typeof setTimeout>
-
-  return function (this: unknown, ...args: unknown[]) {
+  return (...args: Parameters<T>) => {
     clearTimeout(timer)
-    timer = setTimeout(() => {
-      func.apply(this, args)
-    }, debounceTime)
+    timer = setTimeout(() => func(...args), time)
   }
 }
 

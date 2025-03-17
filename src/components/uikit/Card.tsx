@@ -2,7 +2,7 @@ import { HTMLAttributes, ReactNode } from 'react'
 
 import { cn } from '@/helpers/common.helpers'
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+type CardProps = HTMLAttributes<HTMLDivElement> & {
   className?: string
   children: ReactNode
 }

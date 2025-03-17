@@ -8,7 +8,8 @@ type PaginationProps = {
   onChangePage: (page: number) => void
 }
 
-export const Pagination = ({ totalPages, currentPage, onChangePage }: PaginationProps) => {
+export const Pagination: React.FC<PaginationProps> = props => {
+  const { totalPages, currentPage, onChangePage } = props
   const pages = useMemo(() => Array.from({ length: totalPages }, (_, i) => i + 1), [totalPages])
 
   return (
@@ -41,6 +42,7 @@ export const Pagination = ({ totalPages, currentPage, onChangePage }: Pagination
         size='sm'
         onClick={() => onChangePage(currentPage + 1)}
         disabled={currentPage === totalPages}
+        data-testid='next'
       >
         Next
       </Button>

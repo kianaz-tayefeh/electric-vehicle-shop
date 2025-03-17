@@ -5,12 +5,8 @@ import { useRouter } from 'next/router'
 
 import { CarFilters } from '@/components/templates/CarFilters'
 import { CarItem } from '@/components/templates/CarItem'
+import { EmptyContent, Pagination, Text, Virtualization } from '@/components/uikit'
 import { Divider } from '@/components/uikit/Divider'
-import { EmptyContent } from '@/components/uikit/EmptyContent'
-import { Flex } from '@/components/uikit/Flex'
-import { Pagination } from '@/components/uikit/Pagination'
-import { Title } from '@/components/uikit/Title'
-import { Virtualization } from '@/components/uikit/Virtualization'
 import { getCarsData } from '@/services/car.service'
 import { TypeCar } from '@/types/car.type'
 
@@ -22,8 +18,6 @@ type CarsProps = {
   page: number
   totalPages: number
 }
-
-// height: calc(100vh - 200px);
 
 const Cars = (props: CarsProps) => {
   const { cars, sort, order, search, page, totalPages } = props
@@ -48,17 +42,17 @@ const Cars = (props: CarsProps) => {
 
   return (
     <div>
-      <Title order={4}>Electric Vehicles</Title>
+      <Text variant='h1'>Electric Vehicles</Text>
       <Divider size='md' className='mb-6' />
 
-      <Flex justify='center' align='center'>
+      <div className='flex justify-center items-start'>
         <CarFilters
           updateRouterQueries={updateRouterQueries}
           search={search}
           sort={sort}
           order={order}
         />
-      </Flex>
+      </div>
 
       {!cars.length && (
         <EmptyContent message='No electric vehicles found. Try a different search.' />

@@ -2,7 +2,7 @@ import { HTMLAttributes } from 'react'
 
 import { cn } from '@/helpers/common.helpers'
 
-interface DividerProps extends HTMLAttributes<HTMLDivElement> {
+type DividerProps = HTMLAttributes<HTMLDivElement> & {
   size?: 'sm' | 'md' | 'lg'
 }
 
