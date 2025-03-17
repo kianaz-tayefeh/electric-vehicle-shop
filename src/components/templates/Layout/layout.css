@@ -85,7 +85,7 @@ body {
     @apply text-white bg-[var(--danger)] hover:bg-red-700 active:bg-red-800 focus:ring-red-300;
   }
   .btn-ghost {
-    @apply text-[var(--text-primary)] hover:bg-gray-200 active:bg-gray-300 dark:hover:bg-gray-800;
+    @apply text-[var(--text-primary)] hover:bg-gray-200 active:bg-gray-300 dark:hover:bg-gray-300;
   }
   .btn-link {
     @apply text-[var(--brand-600)] underline underline-offset-4 hover:text-[var(--brand-700)] hover:underline;

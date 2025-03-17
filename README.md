@@ -14,7 +14,10 @@ A Next.js application for listing vehicles with search, filters, sorting, and pa
   - Optimized image loading with skeletons and opacity transitions.
   - Virtualized list for performance.
   - Dark mode support.
-- **UI & UX**: TailwindCSS, responsive design, keyboard navigation.
+  - Keyboard Navigation:
+    - Press H to navigate to Home (/).
+    - Press C to navigate to Cars (/cars).
+- **UI & UX**: TailwindCSS and responsive design.
 - **Testing**: Implemented with Vitest.
 
 ## Setup

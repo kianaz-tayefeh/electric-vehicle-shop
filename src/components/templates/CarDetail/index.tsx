@@ -6,6 +6,7 @@ import { TypeCar } from '@/types/car.type'
 
 import {
   AlertCircle,
+  ArrowLeft,
   BatteryCharging,
   Calendar,
   Euro,
@@ -15,12 +16,14 @@ import {
   Users,
   Zap,
 } from 'lucide-react'
+import { useRouter } from 'next/router'
 
 type CarDetailProps = {
   car: TypeCar
 }
 
 export const CarDetail: React.FC<CarDetailProps> = ({ car }) => {
+  const router = useRouter()
   if (!car) return null
 
   const carInfo = [
@@ -46,8 +49,12 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car }) => {
   ]
 
   return (
-    <Card className='p-6 sm:p-8 md:p-10 shadow-lg'>
-      <div className='flex flex-col lg:flex-row gap-6 items-start'>
+    <Card className='p-4 sm:p-6 md:p-3 shadow-lg'>
+      <Button variant='ghost' size='sm' onClick={() => router.back()}>
+        <ArrowLeft size={18} /> Back
+      </Button>
+
+      <div className='flex flex-col lg:flex-row gap-6 items-start mt-2'>
         {/* Image Gallery */}
         <div className='w-full lg:w-1/2'>
           <Text variant='h1' className='mb-4 text-center lg:text-left'>
@@ -57,7 +64,7 @@ export const CarDetail: React.FC<CarDetailProps> = ({ car }) => {
         </div>
 
         {/* Car Details */}
-        <CardContent className='p-5 w-full lg:w-1/2'>
+        <CardContent className='p-5  w-full lg:w-1/2'>
           <Text variant='h3' color='brand-500' className='text-2xl'>
             {getPriceFormat(car.price)} €
           </Text>

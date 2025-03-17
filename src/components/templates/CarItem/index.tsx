@@ -61,7 +61,6 @@ export const CarItem = ({ item: car }: CarItemProps): JSX.Element => {
         <Text variant='p'>Price</Text>
         <div className='flex items-end gap-0'>
           <Text variant='h3' color='primary'>
-            <Euro size={12} className='inline' />
             {getPriceFormat(car.price)}
           </Text>
         </div>
